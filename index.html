@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shark | Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Fixed top navigation -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">Shark</div>
+      <nav class="nav-links">
+        <a href="#section-hero">Home</a>
+        <a href="#section-about">About</a>
+        <a href="#section-experience">Experience</a>
+        <a href="#section-projects">Projects</a>
+        <a href="#section-contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <!-- light / dark toggle -->
+        <div class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress">
+    <div class="scroll-progress__bar" id="scroll-progress-bar"></div>
+  </div>
+
+  <!-- Smooth scroll wrapper (keep IDs for GSAP smooth scroll) -->
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+
+      <!-- HERO -->
+      <section id="section-hero" class="section hero">
+        <div class="hero-content">
+          <p class="hero-eyebrow">Portfolio</p>
+          <h1 class="hero-title">
+            Harkanwar “Shark” Maan<br />
+            <span>Engineer · Developer · Builder</span>
+          </h1>
+          <p class="hero-subtitle">
+            Services Engineering Cadet at BESIX Watpac, blending construction,
+            engineering and software to build smarter workflows, tools and systems
+            that actually get used on-site.
+          </p>
+          <div class="hero-buttons">
+            <a href="#section-projects" class="btn primary">View Projects</a>
+            <a href="#section-about" class="btn ghost">About Me</a>
+          </div>
+        </div>
+        <div class="hero-orbit">
+          <div class="orbit-dot orbit-dot-1"></div>
+          <div class="orbit-dot orbit-dot-2"></div>
+          <div class="orbit-dot orbit-dot-3"></div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="section-about" class="section section-padded">
+        <div class="section-header">
+          <h2>About</h2>
+          <p>A short snapshot of who I am and what I do.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text card">
+            <p>
+              I’m Harkanwar “Shark” Maan — an Electrical Engineering student and
+              Services Engineering Cadet at BESIX Watpac. I work on major
+              design-and-construct projects like the Woolworths Sydney Fresh &
+              Chilled Distribution Centre, following my earlier involvement on the
+              Barangaroo Metro Station project. My day-to-day blends engineering,
+              coordination and problem-solving across electrical, mechanical,
+              hydraulic and fire packages.
+            </p>
+
+            <p>
+              Outside of construction, I build software tools that improve workflow
+              efficiency — from subcontractor rating systems, to payroll automation
+              engines, to engineering simulations and data-driven models. My focus is
+              simple: build things that solve real problems. Whether it’s designing a
+              commissioning process, optimising a services package, or coding a tool
+              from scratch, I enjoy taking ideas from concept to something tangible,
+              functional and used.
+            </p>
+          </div>
+
+          <div class="about-meta card">
+            <h3>Focus Areas</h3>
+            <ul>
+              <li>Services Engineering & D&C Delivery</li>
+              <li>Construction Workflow Design</li>
+              <li>Web Apps, Automation & Tools</li>
+              <li>Engineering Simulation & Data Models</li>
+              <li>Property Investment Analysis</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="section-experience" class="section section-padded">
+        <div class="section-header">
+          <h2>Experience</h2>
+          <p>Timeline-style overview of roles and impact.</p>
+        </div>
+        <div class="timeline">
+
+          <article class="timeline-item card">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>Services Engineering Cadet — BESIX Watpac</h3>
+              <p class="timeline-meta">2024 — Present · Sydney, Australia</p>
+              <p>
+                Working on the Woolworths Sydney Fresh & Chilled Distribution Centre
+                across mechanical, electrical, fire and hydraulic services. Supporting
+                commissioning, ITPs, coordination, design reviews, safety walks and
+                subcontractor management. Building workflow tools internally to support
+                documentation and delivery.
+              </p>
+            </div>
+          </article>
+
+          <article class="timeline-item card">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>Building Cadet — BESIX Watpac</h3>
+              <p class="timeline-meta">2023 — 2024 · Sydney, Australia</p>
+              <p>
+                Contributed to the Barangaroo Metro Station project. Assisted with
+                contract documentation, tendering, commissioning tracking, QA/ITPs,
+                services coordination and weekly safety committee walks. Developed the
+                O&amp;MM template now used across subcontractors.
+              </p>
+            </div>
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- SKILLS (radar chart with GSAP-driven animation) -->
+      <section id="skills" class="section section-padded">
+        <div class="section-header">
+          <h2>Skills Radar</h2>
+          <p>Neon spider chart of core focus areas.</p>
+        </div>
+        <div class="skills-wrapper">
+          <div class="skills-chart card">
+            <!-- SVG radar grid + animated polygon -->
+            <svg viewBox="-120 -120 240 240" aria-label="Skills radar">
+              <g id="radar-grid" stroke="rgba(125, 249, 255, 0.25)" stroke-width="0.8">
+                <circle r="20" fill="none" />
+                <circle r="40" fill="none" />
+                <circle r="60" fill="none" />
+                <circle r="80" fill="none" />
+                <circle r="100" fill="none" />
+                <g id="radar-axes">
+                  <line x1="0" y1="0" x2="0" y2="-110" />
+                  <line x1="104.6" y1="-34" x2="128" y2="-42" />
+                  <line x1="64.7" y1="88.8" x2="79" y2="108" />
+                  <line x1="-64.7" y1="88.8" x2="-79" y2="108" />
+                  <line x1="-104.6" y1="-34" x2="-128" y2="-42" />
+                </g>
+              </g>
+              <polygon id="radar-shape" fill="rgba(125, 249, 255, 0.16)" stroke="#7df9ff" stroke-width="2.2" points="" />
+              <g id="radar-dots" fill="#7df9ff"></g>
+            </svg>
+            <!-- positioned labels around the chart -->
+            <div class="radar-label radar-label-1">Services Engineering (85)</div>
+            <div class="radar-label radar-label-2">Software Development (75)</div>
+            <div class="radar-label radar-label-3">Automation &amp; Scripting (90)</div>
+            <div class="radar-label radar-label-4">Data &amp; Simulation (70)</div>
+            <div class="radar-label radar-label-5">Construction Workflows (80)</div>
+          </div>
+          <div class="card">
+            <h3>Focus Areas</h3>
+            <ul class="skills-labels">
+              <li><strong>Services Engineering (85)</strong> — Electrical, mechanical, fire, hydraulics coordination, commissioning, ITPs.</li>
+              <li><strong>Software Development (75)</strong> — Python, JS, MATLAB, Apps Script, automation tools.</li>
+              <li><strong>Automation &amp; Scripting (90)</strong> — Workflow tools, Sheets engines, contractor rating system, pay calculators.</li>
+              <li><strong>Data &amp; Simulation (70)</strong> — QuTiP, signal processing, regression models, engineering analysis.</li>
+              <li><strong>Construction Workflows (80)</strong> — D&amp;C delivery, O&amp;MM templates, services sequencing, subcontractor management.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="section-projects" class="section section-padded">
+        <div class="section-header">
+          <h2>Projects</h2>
+          <p>Highlight a few key builds with strong one-liners.</p>
+        </div>
+
+        <div class="projects-grid">
+
+          <article class="project-card card" data-project='{"title":"Project One","desc":"Short description of what it is, who it’s for, and what changed because of it. Think problem + solution + impact.","image":"assets/placeholder-1.jpg"}'>
+            <h3>Project One</h3>
+            <p>
+              Short description of what it is, who it’s for, and what changed
+              because of it. Think “problem + solution + impact”.
+            </p>
+            <span class="project-tag">Web App</span>
+          </article>
+
+          <article class="project-card card" data-project='{"title":"Project Two","desc":"Another placeholder. Later, you can link out to GitHub, a live demo, or a case study.","image":"assets/placeholder-2.jpg"}'>
+            <h3>Project Two</h3>
+            <p>
+              Another placeholder. Later, you can link out to GitHub, a live demo,
+              or a case study.
+            </p>
+            <span class="project-tag">Automation</span>
+          </article>
+
+          <article class="project-card card" data-project='{"title":"Project Three","desc":"Keep these short and sharp — the design will carry a lot already.","image":"assets/placeholder-3.jpg"}'>
+            <h3>Project Three</h3>
+            <p>
+              Keep these short and sharp — the design will carry a lot already.
+            </p>
+            <span class="project-tag">Experiment</span>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Horizontal projects showcase -->
+      <section id="projects-horizontal" class="section section-padded">
+        <div class="section-header">
+          <h2>Projects Showcase</h2>
+          <p>Scroll vertically to glide through a horizontal band.</p>
+        </div>
+        <div class="horizontal-wrapper">
+          <div class="horizontal-track" id="horizontal-track">
+            <div class="horizontal-panel">Automation Ops — build pipelines that ship.</div>
+            <div class="horizontal-panel">Data &amp; Simulation — test before you pour concrete.</div>
+            <div class="horizontal-panel">Developer Tools — faster feedback loops.</div>
+            <div class="horizontal-panel">Field Systems — rugged, reliable, repeatable.</div>
+            <div class="horizontal-panel">Construction Workflows — service-heavy, less friction.</div>
+            <div class="horizontal-panel">Experiments — prototype, learn, iterate.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="section-contact" class="section section-padded section-contact">
+        <div class="section-header">
+          <h2>Contact</h2>
+          <p>One clear CTA to reach you.</p>
+        </div>
+        <div class="contact-inner card">
+          <p>
+            Ready to plug in actual details later. For now, this is just layout
+            and motion.
+          </p>
+          <a href="mailto:you@example.com" class="btn primary">Email Me</a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <p>Ac <span id="year"></span> Shark — All rights reserved.</p>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Project modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <h3 id="modal-title">Project Title</h3>
+      <p id="modal-desc">Description</p>
+      <img id="modal-image" src="" alt="Project visual" />
+      <button class="modal-close" id="modal-close">Close</button>
+    </div>
+  </div>
+
+  <!-- GSAP + ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
