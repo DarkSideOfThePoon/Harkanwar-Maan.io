@@ -1,387 +1,348 @@
-// Smooth inertia scrolling using GSAP (kept intact)
-// -------------------------------------------------
+// Portfolio interactions
+// ----------------------
 
-const smoothWrapper = document.getElementById("smooth-wrapper");
-const smoothContent = document.getElementById("smooth-content");
-const hasGSAP = typeof window.gsap !== "undefined";
-const hasScrollTrigger = hasGSAP && typeof window.ScrollTrigger !== "undefined";
+window.addEventListener("DOMContentLoaded", () => {
+  const smoothWrapper = document.getElementById("smooth-wrapper");
+  const smoothContent = document.getElementById("smooth-content");
+  const hasGSAP = typeof window.gsap !== "undefined";
+  const hasScrollTrigger = hasGSAP && typeof window.ScrollTrigger !== "undefined";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-if (hasGSAP && hasScrollTrigger) {
-  gsap.registerPlugin(ScrollTrigger);
-}
+  if (hasGSAP && hasScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
 
-function initSmoothScroll() {
-  if (!hasGSAP || !hasScrollTrigger || !smoothWrapper || !smoothContent) {
+  function useNativeScroll() {
     if (smoothWrapper) {
       smoothWrapper.style.position = "static";
       smoothWrapper.style.overflow = "visible";
     }
-    console.warn("GSAP/ScrollTrigger missing; fallback to native scroll.");
-    return;
+    if (smoothContent) {
+      smoothContent.style.transform = "none";
+    }
+    document.body.style.height = "auto";
   }
 
-  let contentHeight;
-  let currentScroll = 0;
-  let targetScroll = 0;
-  const ease = 0.12;
+  function initSmoothScroll() {
+    if (prefersReducedMotion || !hasGSAP || !hasScrollTrigger || !smoothWrapper || !smoothContent) {
+      useNativeScroll();
+      return;
+    }
 
-  const setBodyHeight = () => {
-    contentHeight = smoothContent.getBoundingClientRect().height;
-    document.body.style.height = contentHeight + "px";
-  };
+    let contentHeight = 0;
+    let currentScroll = 0;
+    let targetScroll = 0;
+    const ease = 0.12;
 
-  setBodyHeight();
-  window.addEventListener("resize", () => {
+    const setBodyHeight = () => {
+      contentHeight = smoothContent.getBoundingClientRect().height;
+      document.body.style.height = `${contentHeight}px`;
+    };
+
     setBodyHeight();
-    ScrollTrigger.refresh();
-  });
 
-  window.addEventListener("scroll", () => {
-    targetScroll = window.scrollY || window.pageYOffset;
-  });
+    window.addEventListener("resize", () => {
+      setBodyHeight();
+      ScrollTrigger.refresh();
+    }, { passive: true });
 
-  gsap.ticker.add(() => {
-    currentScroll += (targetScroll - currentScroll) * ease;
-    gsap.set(smoothContent, { y: -currentScroll });
-  });
-}
-
-initSmoothScroll();
-
-// Simple year in footer
-document.getElementById("year").textContent = new Date().getFullYear();
-
-// Scroll-triggered reveals
-function setupSectionReveals() {
-  if (!hasScrollTrigger) return;
-  const sections = document.querySelectorAll(".section-padded, .hero");
-
-  sections.forEach((sec) => {
-    sec.classList.add("section-reveal");
-
-    gsap.to(sec, {
-      scrollTrigger: {
-        trigger: sec,
-        start: "top 80%",
-        end: "bottom 40%",
-        scrub: false
-      },
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out"
-    });
-  });
-}
-
-// Skills radar animation (triggered on view)
-function setupSkillsRadar() {
-  const shape = document.getElementById("radar-shape");
-  const dots = document.getElementById("radar-dots");
-  if (!shape || !dots || !hasGSAP) return;
-
-  // Five-point radar values (0-100)
-  const categories = [
-    { label: "Services Engineering", value: 85 },
-    { label: "Software Development", value: 75 },
-    { label: "Automation & Scripting", value: 90 },
-    { label: "Data & Simulation", value: 70 },
-    { label: "Construction Workflows", value: 80 }
-  ];
-
-  const total = categories.length;
-
-  const toPoints = (vals) => vals.map((val, i) => {
-    const angle = (Math.PI * 2 * i) / total - Math.PI / 2;
-    const r = (val / 100) * 100;
-    const x = r * Math.cos(angle);
-    const y = r * Math.sin(angle);
-    return `${x},${y}`;
-  });
-
-  const render = (vals) => {
-    const points = toPoints(vals);
-    shape.setAttribute("points", points.join(" "));
-    dots.innerHTML = points.map((pt) => {
-      const [x, y] = pt.split(",");
-      return `<circle cx="${x}" cy="${y}" r="3.5"></circle>`;
-    }).join("");
-  };
-
-  const animate = () => {
-    const tl = gsap.timeline();
-    tl.fromTo(
-      { vals: categories.map(() => 0) },
-      {
-        vals: categories.map((c) => c.value),
-        duration: 1.4,
-        ease: "power2.out",
-        onUpdate: function () { render(this.targets()[0].vals); }
-      }
-    );
-  };
-
-  if (hasScrollTrigger) {
-    ScrollTrigger.create({
-      trigger: "#skills",
-      start: "top 70%",
-      once: true,
-      onEnter: animate
-    });
-  } else {
-    animate();
-  }
-}
-
-// Directional drift on scroll (non-linear feel)
-function setupDirectionalDrift() {
-  if (!hasScrollTrigger) return;
-  const sections = document.querySelectorAll(".section");
-
-  sections.forEach((sec, index) => {
-    const direction = index % 2 === 0 ? 1 : -1;
-    const offsetX = 140 * direction;
-    const tilt = 1.5 * direction;
-
-    gsap.fromTo(
-      sec,
-      { x: offsetX, rotation: tilt },
-      {
-        x: 0,
-        rotation: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sec,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      }
-    );
-  });
-}
-
-// Scroll progress bar
-function setupScrollProgress() {
-  const bar = document.getElementById("scroll-progress-bar");
-  if (!bar) return;
-
-  if (hasScrollTrigger) {
-    ScrollTrigger.create({
-      start: 0,
-      end: () => document.body.scrollHeight - window.innerHeight,
-      onUpdate: (self) => {
-        bar.style.width = `${self.progress * 100}%`;
-      }
-    });
-  } else {
     window.addEventListener("scroll", () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = (window.scrollY / max) * 100;
-      bar.style.width = `${pct}%`;
+      targetScroll = window.scrollY || window.pageYOffset;
+    }, { passive: true });
+
+    gsap.ticker.add(() => {
+      currentScroll += (targetScroll - currentScroll) * ease;
+      gsap.set(smoothContent, { y: -currentScroll });
     });
   }
-}
 
-// Hero parallax (mouse) + idle motion
-function setupHeroParallax() {
-  const hero = document.getElementById("section-hero");
-  if (!hero || !hasGSAP) return;
+  function setupYear() {
+    const year = document.getElementById("year");
+    if (year) year.textContent = new Date().getFullYear();
+  }
 
-  const targets = {
-    ".hero-title": 8,
-    ".hero-subtitle": 12,
-    ".hero-orbit": 16
-  };
+  function setupSectionReveals() {
+    if (prefersReducedMotion || !hasGSAP || !hasScrollTrigger) return;
 
-  const applyParallax = (xPercent, yPercent) => {
-    Object.entries(targets).forEach(([selector, strength]) => {
-      gsap.to(selector, {
-        x: xPercent * strength,
-        y: yPercent * strength,
-        duration: 0.6,
-        ease: "power2.out"
+    document.querySelectorAll(".section-padded, .hero").forEach((section) => {
+      section.classList.add("section-reveal");
+      gsap.to(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 82%",
+          once: true
+        },
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        ease: "power3.out"
       });
     });
-  };
+  }
 
-  hero.addEventListener("mousemove", (e) => {
-    const rect = hero.getBoundingClientRect();
-    const xPercent = (e.clientX - rect.left - rect.width / 2) / rect.width;
-    const yPercent = (e.clientY - rect.top - rect.height / 2) / rect.height;
-    applyParallax(xPercent, yPercent);
-  });
+  function setupSkillsRadar() {
+    const shape = document.getElementById("radar-shape");
+    const dots = document.getElementById("radar-dots");
+    if (!shape || !dots) return;
 
-  hero.addEventListener("mouseleave", () => applyParallax(0, 0));
+    // Single source of truth for the five axes (order matches the
+    // radar-label elements, clockwise from top).
+    const axes = [
+      { label: "Services Engineering", value: 88 },
+      { label: "Software & Automation", value: 76 },
+      { label: "Data & Python", value: 90 },
+      { label: "Hardware & Systems", value: 72 },
+      { label: "Site Workflows", value: 84 }
+    ];
+    const values = axes.map((a) => a.value);
+    const total = values.length;
 
-  // Idle float for orbit/dots
-  gsap.to(".hero-orbit", {
-    y: -10,
-    duration: 2.5,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
+    const toPoints = (vals) => vals.map((value, index) => {
+      const angle = (Math.PI * 2 * index) / total - Math.PI / 2;
+      const radius = (value / 100) * 100;
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+      return `${x.toFixed(2)},${y.toFixed(2)}`;
+    });
 
-  gsap.to(".orbit-dot-1", {
-    x: 6,
-    y: -4,
-    scale: 1.02,
-    duration: 4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
+    const render = (vals) => {
+      const points = toPoints(vals);
+      shape.setAttribute("points", points.join(" "));
+      dots.innerHTML = points.map((point) => {
+        const [x, y] = point.split(",");
+        return `<circle cx="${x}" cy="${y}" r="3.5"></circle>`;
+      }).join("");
+    };
 
-  gsap.to(".orbit-dot-2", {
-    x: -4,
-    y: 3,
-    duration: 5,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  gsap.to(".orbit-dot-3", {
-    x: 5,
-    y: 5,
-    duration: 3.8,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-}
-
-// Project modal popups
-function setupProjectModals() {
-  const overlay = document.getElementById("modal-overlay");
-  const modal = document.getElementById("modal");
-  const titleEl = document.getElementById("modal-title");
-  const descEl = document.getElementById("modal-desc");
-  const imageEl = document.getElementById("modal-image");
-  const closeBtn = document.getElementById("modal-close");
-  if (!overlay || !modal) return;
-
-  const openModal = (data) => {
-    titleEl.textContent = data.title;
-    descEl.textContent = data.desc;
-    imageEl.src = data.image;
-    imageEl.alt = `${data.title} visual`;
-    overlay.style.display = "flex";
-
-    if (hasGSAP) {
-      gsap.fromTo(
-        modal,
-        { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
-      );
-    } else {
-      modal.style.opacity = 1;
-      modal.style.transform = "scale(1)";
+    if (prefersReducedMotion || !hasGSAP) {
+      // No animation: paint the final shape and stop.
+      render(values);
+      return;
     }
-  };
 
-  const closeModal = () => {
-    if (hasGSAP) {
-      gsap.to(modal, {
-        opacity: 0,
-        scale: 0.95,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => {
-          overlay.style.display = "none";
+    // Paint at zero so the grow-in animation starts from an empty centre
+    // (avoids a full -> zero -> full flash).
+    render(values.map(() => 0));
+
+    const animate = () => {
+      // Tween a proxy whose numeric keys GSAP CAN interpolate (it can't
+      // tween an array value). Read those keys back on each update.
+      const proxy = {};
+      values.forEach((_, i) => { proxy["a" + i] = 0; });
+
+      const target = {};
+      values.forEach((v, i) => { target["a" + i] = v; });
+
+      gsap.to(proxy, {
+        ...target,
+        duration: 1.25,
+        ease: "power2.out",
+        onUpdate() {
+          render(values.map((_, i) => proxy["a" + i]));
         }
       });
+    };
+
+    if (hasScrollTrigger) {
+      ScrollTrigger.create({
+        trigger: "#section-skills",
+        start: "top 72%",
+        once: true,
+        onEnter: animate
+      });
     } else {
-      overlay.style.display = "none";
+      animate();
     }
-  };
-
-  document.querySelectorAll(".project-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      const data = card.dataset.project ? JSON.parse(card.dataset.project) : {
-        title: card.querySelector("h3")?.textContent || "Project",
-        desc: card.querySelector("p")?.textContent || "",
-        image: ""
-      };
-      openModal(data);
-    });
-  });
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeModal();
-  });
-  closeBtn?.addEventListener("click", closeModal);
-}
-
-// Horizontal scroll showcase
-function setupHorizontalScroll() {
-  const track = document.getElementById("horizontal-track");
-  if (!track || !hasScrollTrigger) return;
-
-  const panels = gsap.utils.toArray(".horizontal-panel");
-  const totalWidth = track.scrollWidth;
-  const distance = totalWidth - window.innerWidth;
-
-  gsap.to(track, {
-    x: () => -distance,
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#projects-horizontal",
-      start: "top top",
-      end: () => `+=${totalWidth}`,
-      scrub: true,
-      pin: true,
-      anticipatePin: 1
-    }
-  });
-
-  // refresh when viewport resizes
-  window.addEventListener("resize", () => ScrollTrigger.refresh(), { passive: true });
-}
-
-// Light / dark theme toggle
-function setupThemeToggle() {
-  const toggle = document.getElementById("theme-toggle");
-  if (!toggle) return;
-  const body = document.body;
-  const storageKey = "shark-theme";
-
-  const applyTheme = (mode) => {
-    body.classList.toggle("theme-light", mode === "light");
-    toggle.classList.toggle("is-light", mode === "light");
-  };
-
-  const saved = localStorage.getItem(storageKey);
-  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-  const initial = saved || (prefersLight ? "light" : "dark");
-  applyTheme(initial);
-
-  toggle.addEventListener("click", () => {
-    const next = body.classList.contains("theme-light") ? "dark" : "light";
-    applyTheme(next);
-    localStorage.setItem(storageKey, next);
-    if (hasGSAP) {
-      gsap.fromTo(body, { opacity: 0.92 }, { opacity: 1, duration: 0.25, ease: "power1.out" });
-    }
-  });
-}
-
-// Init gated by GSAP
-if (hasGSAP) {
-  if (hasScrollTrigger) {
-    setupSectionReveals();
-    setupDirectionalDrift();
-    setupHorizontalScroll();
   }
+
+  function setupScrollProgress() {
+    const bar = document.getElementById("scroll-progress-bar");
+    if (!bar) return;
+
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? (window.scrollY / max) * 100 : 0;
+      bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    };
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    update();
+  }
+
+  function setupHeroMotion() {
+    const hero = document.getElementById("section-hero");
+    const pointerFine = window.matchMedia("(pointer: fine)").matches;
+    if (prefersReducedMotion || !hasGSAP || !hero || !pointerFine) return;
+
+    const targets = {
+      ".hero-title": 6,
+      ".hero-subtitle": 10,
+      ".hero-panel": 8,
+      ".hero-orbit": 14
+    };
+
+    const applyParallax = (xPercent, yPercent) => {
+      Object.entries(targets).forEach(([selector, strength]) => {
+        gsap.to(selector, {
+          x: xPercent * strength,
+          y: yPercent * strength,
+          duration: 0.55,
+          ease: "power2.out"
+        });
+      });
+    };
+
+    hero.addEventListener("mousemove", (event) => {
+      const rect = hero.getBoundingClientRect();
+      const xPercent = (event.clientX - rect.left - rect.width / 2) / rect.width;
+      const yPercent = (event.clientY - rect.top - rect.height / 2) / rect.height;
+      applyParallax(xPercent, yPercent);
+    });
+
+    hero.addEventListener("mouseleave", () => applyParallax(0, 0));
+
+    gsap.to(".hero-orbit", {
+      y: -10,
+      duration: 2.8,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    gsap.to(".orbit-dot-1", { x: 6, y: -4, duration: 4, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    gsap.to(".orbit-dot-2", { x: -4, y: 3, duration: 5, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    gsap.to(".orbit-dot-3", { x: 5, y: 5, duration: 3.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+  }
+
+  function setupProjectModals() {
+    const overlay = document.getElementById("modal-overlay");
+    const modal = document.getElementById("modal");
+    const titleEl = document.getElementById("modal-title");
+    const descEl = document.getElementById("modal-desc");
+    const tagEl = document.getElementById("modal-tag");
+    const stackEl = document.getElementById("modal-stack");
+    const closeBtn = document.getElementById("modal-close");
+    if (!overlay || !modal || !titleEl || !descEl) return;
+
+    let lastFocusedCard = null;
+
+    const openModal = (card) => {
+      lastFocusedCard = card;
+      let data = {};
+      try {
+        data = JSON.parse(card.dataset.project || "{}");
+      } catch (error) {
+        data = {};
+      }
+
+      titleEl.textContent = data.title || card.querySelector("h3")?.textContent || "Project";
+      descEl.textContent = data.desc || card.querySelector("p")?.textContent || "";
+      tagEl.textContent = data.tag || "Project";
+      stackEl.textContent = data.stack || "";
+
+      overlay.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      closeBtn?.focus();
+
+      if (hasGSAP && !prefersReducedMotion) {
+        gsap.fromTo(modal, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" });
+      } else {
+        modal.style.opacity = 1;
+        modal.style.transform = "scale(1)";
+      }
+    };
+
+    const closeModal = () => {
+      const finish = () => {
+        overlay.classList.remove("is-open");
+        document.body.style.overflow = "";
+        if (lastFocusedCard) lastFocusedCard.focus();
+      };
+
+      if (hasGSAP && !prefersReducedMotion) {
+        gsap.to(modal, { opacity: 0, scale: 0.96, duration: 0.2, ease: "power2.in", onComplete: finish });
+      } else {
+        finish();
+      }
+    };
+
+    document.querySelectorAll(".project-card").forEach((card) => {
+      card.addEventListener("click", () => openModal(card));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openModal(card);
+        }
+      });
+    });
+
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeModal();
+    });
+
+    closeBtn?.addEventListener("click", closeModal);
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && overlay.classList.contains("is-open")) closeModal();
+    });
+  }
+
+  function setupHorizontalScroll() {
+    const track = document.getElementById("horizontal-track");
+    if (prefersReducedMotion || !track || !hasGSAP || !hasScrollTrigger) return;
+
+    // Distance the track must travel so its last panel ends flush in view.
+    const getDistance = () => Math.max(0, track.scrollWidth - track.parentElement.offsetWidth);
+
+    gsap.to(track, {
+      x: () => -getDistance(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#projects-horizontal",
+        start: "top top",
+        end: () => `+=${getDistance()}`,
+        scrub: true,
+        pin: true,
+        // pin via transform so pinning works inside the transformed
+        // smooth-scroll content wrapper instead of fighting it.
+        pinType: "transform",
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+  }
+
+  function setupThemeToggle() {
+    const toggle = document.getElementById("theme-toggle");
+    if (!toggle) return;
+
+    const storageKey = "shark-theme";
+
+    const applyTheme = (mode) => {
+      const isLight = mode === "light";
+      document.body.classList.toggle("theme-light", isLight);
+      toggle.classList.toggle("is-light", isLight);
+      toggle.setAttribute("aria-pressed", String(isLight));
+    };
+
+    const saved = localStorage.getItem(storageKey);
+    const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+    applyTheme(saved || (prefersLight ? "light" : "dark"));
+
+    toggle.addEventListener("click", () => {
+      const next = document.body.classList.contains("theme-light") ? "dark" : "light";
+      applyTheme(next);
+      localStorage.setItem(storageKey, next);
+    });
+  }
+
+  initSmoothScroll();
+  setupYear();
+  setupThemeToggle();
+  setupSectionReveals();
   setupScrollProgress();
-  setupHeroParallax();
-  setupProjectModals();
+  setupHeroMotion();
   setupSkillsRadar();
-  setupThemeToggle();
-} else {
-  // Fallbacks
-  setupScrollProgress();
   setupProjectModals();
-  setupThemeToggle();
-}
+  setupHorizontalScroll();
+});

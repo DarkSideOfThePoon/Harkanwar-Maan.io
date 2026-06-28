@@ -3,289 +3,395 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shark | Portfolio</title>
+  <meta name="description" content="Harkanwar Maan: Electrical Engineering and Computer Science student building practical systems across construction, automation, embedded electronics and data." />
+  <meta name="theme-color" content="#050509" />
+  <title>Harkanwar Maan | Engineer & Builder</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <!-- Fixed top navigation -->
-  <header class="nav">
+  <header class="nav" aria-label="Primary navigation">
     <div class="nav-inner">
-      <div class="nav-logo">Shark</div>
-      <nav class="nav-links">
-        <a href="#section-hero">Home</a>
+      <a class="nav-logo" href="#section-hero" aria-label="Back to top">Harkanwar</a>
+      <nav class="nav-links" aria-label="Site sections">
         <a href="#section-about">About</a>
         <a href="#section-experience">Experience</a>
+        <a href="#section-skills">Skills</a>
         <a href="#section-projects">Projects</a>
         <a href="#section-contact">Contact</a>
       </nav>
       <div class="nav-actions">
-        <!-- light / dark toggle -->
-        <div class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" aria-pressed="false">
+          <span class="theme-toggle__knob"></span>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- Scroll progress bar -->
-  <div class="scroll-progress">
+  <div class="scroll-progress" aria-hidden="true">
     <div class="scroll-progress__bar" id="scroll-progress-bar"></div>
   </div>
 
-  <!-- Smooth scroll wrapper (keep IDs for GSAP smooth scroll) -->
   <div id="smooth-wrapper">
     <div id="smooth-content">
-
-      <!-- HERO -->
-      <section id="section-hero" class="section hero">
-        <div class="hero-content">
-          <p class="hero-eyebrow">Portfolio</p>
-          <h1 class="hero-title">
-            Harkanwar “Shark” Maan<br />
-            <span>Engineer · Developer · Builder</span>
-          </h1>
-          <p class="hero-subtitle">
-            Services Engineering Cadet at BESIX Watpac, blending construction,
-            engineering and software to build smarter workflows, tools and systems
-            that actually get used on-site.
-          </p>
-          <div class="hero-buttons">
-            <a href="#section-projects" class="btn primary">View Projects</a>
-            <a href="#section-about" class="btn ghost">About Me</a>
-          </div>
-        </div>
-        <div class="hero-orbit">
-          <div class="orbit-dot orbit-dot-1"></div>
-          <div class="orbit-dot orbit-dot-2"></div>
-          <div class="orbit-dot orbit-dot-3"></div>
-        </div>
-      </section>
-
-      <!-- ABOUT -->
-      <section id="section-about" class="section section-padded">
-        <div class="section-header">
-          <h2>About</h2>
-          <p>A short snapshot of who I am and what I do.</p>
-        </div>
-
-        <div class="about-grid">
-          <div class="about-text card">
-            <p>
-              I’m Harkanwar “Shark” Maan — an Electrical Engineering student and
-              Services Engineering Cadet at BESIX Watpac. I work on major
-              design-and-construct projects like the Woolworths Sydney Fresh &
-              Chilled Distribution Centre, following my earlier involvement on the
-              Barangaroo Metro Station project. My day-to-day blends engineering,
-              coordination and problem-solving across electrical, mechanical,
-              hydraulic and fire packages.
-            </p>
-
-            <p>
-              Outside of construction, I build software tools that improve workflow
-              efficiency — from subcontractor rating systems, to payroll automation
-              engines, to engineering simulations and data-driven models. My focus is
-              simple: build things that solve real problems. Whether it’s designing a
-              commissioning process, optimising a services package, or coding a tool
-              from scratch, I enjoy taking ideas from concept to something tangible,
-              functional and used.
-            </p>
-          </div>
-
-          <div class="about-meta card">
-            <h3>Focus Areas</h3>
-            <ul>
-              <li>Services Engineering & D&C Delivery</li>
-              <li>Construction Workflow Design</li>
-              <li>Web Apps, Automation & Tools</li>
-              <li>Engineering Simulation & Data Models</li>
-              <li>Property Investment Analysis</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- EXPERIENCE -->
-      <section id="section-experience" class="section section-padded">
-        <div class="section-header">
-          <h2>Experience</h2>
-          <p>Timeline-style overview of roles and impact.</p>
-        </div>
-        <div class="timeline">
-
-          <article class="timeline-item card">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <h3>Services Engineering Cadet — BESIX Watpac</h3>
-              <p class="timeline-meta">2024 — Present · Sydney, Australia</p>
-              <p>
-                Working on the Woolworths Sydney Fresh & Chilled Distribution Centre
-                across mechanical, electrical, fire and hydraulic services. Supporting
-                commissioning, ITPs, coordination, design reviews, safety walks and
-                subcontractor management. Building workflow tools internally to support
-                documentation and delivery.
+      <main id="main-content">
+        <section id="section-hero" class="section hero">
+          <div class="hero-content">
+            <div>
+              <p class="hero-eyebrow">Engineer · Developer · Builder</p>
+              <h1 class="hero-title">
+                Harkanwar Maan<br />
+                <span>Building practical systems for complex, real-world work.</span>
+              </h1>
+              <p class="hero-subtitle">
+                Electrical engineering and commissioning, with the software habit to build the tools site actually needs. I work full-time in services delivery at BESIX Watpac while studying at UNSW, turning messy site workflows into trackers, automations and repeatable processes.
               </p>
+              <div class="hero-buttons">
+                <a href="#section-projects" class="btn primary">View Projects</a>
+                <a href="#section-contact" class="btn ghost">Contact</a>
+              </div>
+              <div class="hero-chips" aria-label="Snapshot">
+                <span>BESIX Watpac</span>
+                <span>UNSW EE + CS</span>
+                <span>Construction Tech</span>
+                <span>Automation</span>
+              </div>
+            </div>
+
+            <div class="hero-side">
+              <aside class="hero-panel card" aria-label="Portfolio highlights">
+                <p class="panel-kicker">Current focus</p>
+                <h2>Services delivery + software systems</h2>
+                <p>
+                  I build tools around real constraints: subcontractors, commissioning, documentation, technical reviews, site coordination and reporting.
+                </p>
+                <div class="mini-stack">
+                  <span>Python</span>
+                  <span>JavaScript</span>
+                  <span>MATLAB</span>
+                  <span>C</span>
+                  <span>Apps Script</span>
+                  <span>ESP32</span>
+                </div>
+              </aside>
+
+              <div class="hero-orbit" aria-hidden="true">
+                <div class="orbit-core">Systems<br />Builder</div>
+                <div class="orbit-dot orbit-dot-1"></div>
+                <div class="orbit-dot orbit-dot-2"></div>
+                <div class="orbit-dot orbit-dot-3"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section-padded section-stats" aria-label="Key highlights">
+          <div class="stats-grid">
+            <article class="stat-card card">
+              <span class="stat-number">$430M</span>
+              <span class="stat-label">Woolworths Sydney Fresh & Chilled Distribution Centre project exposure</span>
+            </article>
+            <article class="stat-card card">
+              <span class="stat-number">$350M</span>
+              <span class="stat-label">Sydney Metro Barangaroo Station project exposure</span>
+            </article>
+            <article class="stat-card card">
+              <span class="stat-number">$9.6M</span>
+              <span class="stat-label">Regional sales achieved before engineering career transition</span>
+            </article>
+            <article class="stat-card card">
+              <span class="stat-number">1st</span>
+              <span class="stat-label">UNSW first-year engineering design course overall winner</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="section section-padded section-highlight" aria-label="Selected highlight">
+          <article class="highlight-card card">
+            <p class="highlight-kicker">Selected highlight</p>
+            <h2>Owned a commissioning lifecycle end-to-end as an undergraduate.</h2>
+            <p class="highlight-body">
+              On Sydney Metro's $350M Barangaroo Station, I delivered the full commissioning lifecycle for the Portion 6 dewatering system: design coordination, installation oversight, controls commissioning and the client acceptance demonstration to Sydney Metro. I verified the BMS-integrated controls, duty/standby pump alternation, emergency backup operation, level-trigger setpoints, fault alarms and switchover logic and authored the system's O&amp;M manual, accepted by Sydney Metro with minor comments.
+            </p>
+            <div class="highlight-tags">
+              <span>Full commissioning ownership</span>
+              <span>BMS-integrated controls</span>
+              <span>Client-accepted O&amp;M manual</span>
             </div>
           </article>
+        </section>
 
-          <article class="timeline-item card">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <h3>Building Cadet — BESIX Watpac</h3>
-              <p class="timeline-meta">2023 — 2024 · Sydney, Australia</p>
+        <section id="section-about" class="section section-padded">
+          <div class="section-header">
+            <p class="section-kicker">About</p>
+            <h2>Engineering judgement with builder energy.</h2>
+            <p>I like work that has consequences: live projects, real stakeholders, hardware, deadlines, constraints and systems that need to perform outside a classroom.</p>
+          </div>
+
+          <div class="about-grid">
+            <div class="about-text card">
               <p>
-                Contributed to the Barangaroo Metro Station project. Assisted with
-                contract documentation, tendering, commissioning tracking, QA/ITPs,
-                services coordination and weekly safety committee walks. Developed the
-                O&amp;MM template now used across subcontractors.
+                I’m Harkanwar Maan, an Electrical Engineering and Computer Science student at UNSW and a Services Engineering Cadet at BESIX Watpac. My day-to-day work spans electrical, mechanical, fire, hydraulic, security, vertical transport, refuelling and commissioning coordination on major design-and-construct projects.
+              </p>
+              <p>
+                The pattern across my work is simple: I find operational friction, understand the technical details, then build something useful around it. That might be a commissioning tracker, an automation engine, a Python model, an embedded prototype or a cleaner site workflow.
+              </p>
+              <p>
+                I’m especially interested in construction technology, automation, embedded systems, data-driven decision tools and the overlap between engineering delivery and investment thinking.
               </p>
             </div>
-          </article>
 
-        </div>
+            <div class="about-meta card">
+              <h3>What I bring</h3>
+              <ul class="check-list">
+                <li>Full-time project exposure while completing engineering study</li>
+                <li>Services coordination across multiple building systems</li>
+                <li>Strong communication from sales, site and subcontractor-facing work</li>
+                <li>Software mindset: automate, measure, simplify and document</li>
+                <li>Comfort moving between technical detail and commercial context</li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
-      </section>
+        <section id="section-experience" class="section section-padded">
+          <div class="section-header">
+            <p class="section-kicker">Experience</p>
+            <h2>Where I’ve built judgement.</h2>
+            <p>Public-safe overview of the roles, projects and responsibilities that shaped my practical engineering experience.</p>
+          </div>
 
-      <!-- SKILLS (radar chart with GSAP-driven animation) -->
-      <section id="skills" class="section section-padded">
-        <div class="section-header">
-          <h2>Skills Radar</h2>
-          <p>Neon spider chart of core focus areas.</p>
-        </div>
-        <div class="skills-wrapper">
-          <div class="skills-chart card">
-            <!-- SVG radar grid + animated polygon -->
-            <svg viewBox="-120 -120 240 240" aria-label="Skills radar">
-              <g id="radar-grid" stroke="rgba(125, 249, 255, 0.25)" stroke-width="0.8">
-                <circle r="20" fill="none" />
-                <circle r="40" fill="none" />
-                <circle r="60" fill="none" />
-                <circle r="80" fill="none" />
-                <circle r="100" fill="none" />
-                <g id="radar-axes">
-                  <line x1="0" y1="0" x2="0" y2="-110" />
-                  <line x1="104.6" y1="-34" x2="128" y2="-42" />
-                  <line x1="64.7" y1="88.8" x2="79" y2="108" />
-                  <line x1="-64.7" y1="88.8" x2="-79" y2="108" />
-                  <line x1="-104.6" y1="-34" x2="-128" y2="-42" />
+          <div class="timeline">
+            <article class="timeline-item card">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>Services Engineer Cadet — BESIX Watpac</h3>
+                <p class="timeline-meta">Jan 2025 — Present · Sydney, Australia</p>
+                <p class="timeline-project">Woolworths Sydney Chilled &amp; Fresh Distribution Centre · $430M · Commissioning phase</p>
+                <p>
+                  Supported formal energisation sign-off for VSDs serving chiller, condenser and evaporator packages, following pre-commissioning inspection of live LV equipment. Reviewed and signed off commissioning plans, ITPs and ITCs across refrigeration plant, MSSBs, VSDs and HV generators, and witnessed the full 11kV HV switchboard commissioning sequence through to downstream transformer feed. Coordinating hydraulics, refuelling, vertical transport, security and weighbridge packages, and supporting the Base Services commissioning manager on readiness tracking, FAT closeout and cold-commissioning sequencing.
+                </p>
+              </div>
+            </article>
+
+            <article class="timeline-item card">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>Services Engineer Cadet — BESIX Watpac</h3>
+                <p class="timeline-meta">May 2023 — Dec 2024 · Sydney, Australia</p>
+                <p class="timeline-project">Sydney Metro City &amp; Southwest — Barangaroo Station · $350M · Handover phase</p>
+                <p>
+                  Delivered the full commissioning lifecycle for the Portion 6 dewatering system — design coordination, installation oversight, controls commissioning and client acceptance demonstration to Sydney Metro. Verified BMS-integrated controls including duty/standby pump alternation, emergency backup operation, level-trigger setpoints, fault alarms and switchover logic. Authored the dewatering system O&amp;M manual, accepted by Sydney Metro with minor comments, and managed DALI lighting controls handover and O&amp;M closeout across services packages.
+                </p>
+              </div>
+            </article>
+
+            <article class="timeline-item card">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>Engineering Intern — The Engineering &amp; Design Institute London (King's College)</h3>
+                <p class="timeline-meta">Jun 2023 — Jul 2023 · London, UK</p>
+                <p>
+                  Analysed operational and infrastructure challenges across the London Underground network, focused on Canada Water Station, and presented findings to programme stakeholders.
+                </p>
+              </div>
+            </article>
+
+            <article class="timeline-item card">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>Business Development Manager — Tyremax</h3>
+                <p class="timeline-meta">2020 — 2023 · North-West NSW</p>
+                <p>
+                  Promoted to BDM within 10 months of starting in warehouse/internal sales. Managed the North-West NSW region, delivering $9.6M revenue against a $7M target  (37% over budget) using sales data and customer analysis to drive account growth and regional strategy.
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="section-skills" class="section section-padded">
+          <div class="section-header">
+            <p class="section-kicker">Skills</p>
+            <h2>Capability map.</h2>
+            <p>Less “I know tools”, more “where I can create value”.</p>
+          </div>
+
+          <div class="skills-wrapper">
+            <div class="skills-chart card">
+              <svg viewBox="-120 -120 240 240" role="img" aria-label="Animated capability radar chart">
+                <g id="radar-grid" stroke="rgba(125, 249, 255, 0.25)" stroke-width="0.8">
+                  <circle r="20" fill="none" />
+                  <circle r="40" fill="none" />
+                  <circle r="60" fill="none" />
+                  <circle r="80" fill="none" />
+                  <circle r="100" fill="none" />
+                  <g id="radar-axes">
+                    <line x1="0" y1="0" x2="0" y2="-110" />
+                    <line x1="104.6" y1="-34" x2="128" y2="-42" />
+                    <line x1="64.7" y1="88.8" x2="79" y2="108" />
+                    <line x1="-64.7" y1="88.8" x2="-79" y2="108" />
+                    <line x1="-104.6" y1="-34" x2="-128" y2="-42" />
+                  </g>
                 </g>
-              </g>
-              <polygon id="radar-shape" fill="rgba(125, 249, 255, 0.16)" stroke="#7df9ff" stroke-width="2.2" points="" />
-              <g id="radar-dots" fill="#7df9ff"></g>
-            </svg>
-            <!-- positioned labels around the chart -->
-            <div class="radar-label radar-label-1">Services Engineering (85)</div>
-            <div class="radar-label radar-label-2">Software Development (75)</div>
-            <div class="radar-label radar-label-3">Automation &amp; Scripting (90)</div>
-            <div class="radar-label radar-label-4">Data &amp; Simulation (70)</div>
-            <div class="radar-label radar-label-5">Construction Workflows (80)</div>
+                <polygon id="radar-shape" fill="rgba(125, 249, 255, 0.16)" stroke="#7df9ff" stroke-width="2.2" points="" />
+                <g id="radar-dots" fill="#7df9ff"></g>
+              </svg>
+              <div class="radar-label radar-label-1">Services Engineering</div>
+              <div class="radar-label radar-label-2">Software &amp; Automation</div>
+              <div class="radar-label radar-label-3">Data &amp; Python</div>
+              <div class="radar-label radar-label-4">Hardware &amp; Systems</div>
+              <div class="radar-label radar-label-5">Site Workflows</div>
+            </div>
+
+            <div class="capability-list">
+              <article class="capability-card card">
+                <h3>Engineering delivery</h3>
+                <p>Services coordination, commissioning readiness, design review, ITPs, safety walks and subcontractor interface.</p>
+              </article>
+              <article class="capability-card card">
+                <h3>Software & automation</h3>
+                <p>Python, JavaScript, Apps Script, workflow automation, dashboards, calculators and documentation systems.</p>
+              </article>
+              <article class="capability-card card">
+                <h3>Hardware & systems</h3>
+                <p>ESP32 concepts, sensor workflows, QR/RFID/NFC experiments, circuits, signal processing and control thinking.</p>
+              </article>
+              <article class="capability-card card">
+                <h3>Commercial thinking</h3>
+                <p>Property modelling, investment analysis, sales experience, stakeholder management and practical decision support.</p>
+              </article>
+            </div>
           </div>
-          <div class="card">
-            <h3>Focus Areas</h3>
-            <ul class="skills-labels">
-              <li><strong>Services Engineering (85)</strong> — Electrical, mechanical, fire, hydraulics coordination, commissioning, ITPs.</li>
-              <li><strong>Software Development (75)</strong> — Python, JS, MATLAB, Apps Script, automation tools.</li>
-              <li><strong>Automation &amp; Scripting (90)</strong> — Workflow tools, Sheets engines, contractor rating system, pay calculators.</li>
-              <li><strong>Data &amp; Simulation (70)</strong> — QuTiP, signal processing, regression models, engineering analysis.</li>
-              <li><strong>Construction Workflows (80)</strong> — D&amp;C delivery, O&amp;MM templates, services sequencing, subcontractor management.</li>
-            </ul>
+        </section>
+
+        <section id="section-projects" class="section section-padded">
+          <div class="section-header">
+            <p class="section-kicker">Projects</p>
+            <h2>Selected builds and prototypes.</h2>
+            <p>These are written as public-safe case studies: problem, system and value without exposing confidential project information.</p>
           </div>
-        </div>
-      </section>
 
-      <!-- PROJECTS -->
-      <section id="section-projects" class="section section-padded">
-        <div class="section-header">
-          <h2>Projects</h2>
-          <p>Highlight a few key builds with strong one-liners.</p>
-        </div>
+          <div class="projects-grid">
+            <article class="project-card card" tabindex="0" data-project='{"title":"ReoTracker","desc":"A document-extraction platform for construction dockets. Pulls structured data out of PDFs and outputs it as a spreadsheet and into a database — turning paper-trail dockets into queryable records instead of manual re-keying.","tag":"Construction Tech","stack":"PDF extraction · Spreadsheet output · Database"}'>
+              <div class="project-card__top">
+                <span class="project-tag">Construction Tech</span>
+                <span class="project-status">MVP</span>
+              </div>
+              <h3>ReoTracker</h3>
+              <p>Extracts structured data from construction docket PDFs into a spreadsheet and database — queryable records, not re-keying.</p>
+              <div class="project-stack">PDF extraction · Spreadsheet · Database</div>
+            </article>
 
-        <div class="projects-grid">
+            <article class="project-card card" tabindex="0" data-project='{"title":"Commissioning Readiness Tracker","desc":"A services-delivery tracker concept for commissionable systems, ITP status, technical documents and readiness visibility. Designed around the realities of services packages, not a generic project-management board.","tag":"Services Delivery","stack":"JavaScript · Sheets · Process mapping"}'>
+              <div class="project-card__top">
+                <span class="project-tag">Services Delivery</span>
+                <span class="project-status">Workflow tool</span>
+              </div>
+              <h3>Commissioning Readiness Tracker</h3>
+              <p>Turns commissioning prep into a clearer system across packages, documents, ITPs and responsibilities.</p>
+              <div class="project-stack">JS · Sheets · Process mapping</div>
+            </article>
 
-          <article class="project-card card" data-project='{"title":"Project One","desc":"Short description of what it is, who it’s for, and what changed because of it. Think problem + solution + impact.","image":"assets/placeholder-1.jpg"}'>
-            <h3>Project One</h3>
-            <p>
-              Short description of what it is, who it’s for, and what changed
-              because of it. Think “problem + solution + impact”.
-            </p>
-            <span class="project-tag">Web App</span>
-          </article>
+            <article class="project-card card" tabindex="0" data-project='{"title":"Subcontractor Rating Engine","desc":"A scoring framework for comparing subcontractor performance on practical delivery signals: responsiveness, documentation quality, safety, defects, coordination and close-out behaviour. Built to replace gut-feel selection with a repeatable record.","tag":"Automation","stack":"Web app · Data scoring · Dashboards"}'>
+              <div class="project-card__top">
+                <span class="project-tag">Automation</span>
+                <span class="project-status">Demo</span>
+              </div>
+              <h3>Subcontractor Rating Engine</h3>
+              <p>Structured performance scoring for subcontractor comparison, lessons learnt and procurement support.</p>
+              <div class="project-stack">Web app · Scoring · Dashboards</div>
+            </article>
 
-          <article class="project-card card" data-project='{"title":"Project Two","desc":"Another placeholder. Later, you can link out to GitHub, a live demo, or a case study.","image":"assets/placeholder-2.jpg"}'>
-            <h3>Project Two</h3>
-            <p>
-              Another placeholder. Later, you can link out to GitHub, a live demo,
-              or a case study.
-            </p>
-            <span class="project-tag">Automation</span>
-          </article>
+            <article class="project-card card" tabindex="0" data-project='{"title":"Interactive Poker Table","desc":"Electrical engineering prototype exploring player identification, local network game state and table interaction using ESP32, QR login flows, RFID/NFC concepts and dealer-side scanning.","tag":"Embedded Systems","stack":"ESP32 · QR/RFID · Local networking"}'>
+              <div class="project-card__top">
+                <span class="project-tag">Embedded Systems</span>
+                <span class="project-status">Prototype</span>
+              </div>
+              <h3>Interactive Poker Table</h3>
+              <p>ESP32-based concept using QR/RFID workflows to connect physical play with digital game state.</p>
+              <div class="project-stack">ESP32 · QR/RFID · Local network</div>
+            </article>
 
-          <article class="project-card card" data-project='{"title":"Project Three","desc":"Keep these short and sharp — the design will carry a lot already.","image":"assets/placeholder-3.jpg"}'>
-            <h3>Project Three</h3>
-            <p>
-              Keep these short and sharp — the design will carry a lot already.
-            </p>
-            <span class="project-tag">Experiment</span>
-          </article>
+            <article class="project-card card" tabindex="0" data-project='{"title":"Property Price Regression Model","desc":"Python notebook concept for collecting suburb/property features, testing data quality and building a regression model to support property-investment analysis before scaling to larger datasets.","tag":"Data Modelling","stack":"Python · Regression · Real estate data"}'>
+              <div class="project-card__top">
+                <span class="project-tag">Data Modelling</span>
+                <span class="project-status">Notebook</span>
+              </div>
+              <h3>Property Price Regression Model</h3>
+              <p>Regression-model workflow for analysing property value drivers and investment assumptions.</p>
+              <div class="project-stack">Python · Regression · Data prep</div>
+            </article>
 
-        </div>
-      </section>
-
-      <!-- Horizontal projects showcase -->
-      <section id="projects-horizontal" class="section section-padded">
-        <div class="section-header">
-          <h2>Projects Showcase</h2>
-          <p>Scroll vertically to glide through a horizontal band.</p>
-        </div>
-        <div class="horizontal-wrapper">
-          <div class="horizontal-track" id="horizontal-track">
-            <div class="horizontal-panel">Automation Ops — build pipelines that ship.</div>
-            <div class="horizontal-panel">Data &amp; Simulation — test before you pour concrete.</div>
-            <div class="horizontal-panel">Developer Tools — faster feedback loops.</div>
-            <div class="horizontal-panel">Field Systems — rugged, reliable, repeatable.</div>
-            <div class="horizontal-panel">Construction Workflows — service-heavy, less friction.</div>
-            <div class="horizontal-panel">Experiments — prototype, learn, iterate.</div>
+            <article class="project-card card" tabindex="0" data-project='{"title":"InsiderFlow","desc":"A Python pipeline that scrapes daily insider-purchase filings, cleans and normalises messy tabular data, then ranks each trade with a weighted model across insider seniority, ownership-change percentage, trade value and cluster-buying signals. Generates a formatted HTML report delivered automatically by email. A personal data project for exploring market signals.","tag":"Data / Python","stack":"Python · BeautifulSoup · pandas · yfinance · SMTP"}'>
+              <div class="project-card__top">
+                <span class="project-tag">Data / Python</span>
+                <span class="project-status">Personal project</span>
+              </div>
+              <h3>InsiderFlow</h3>
+              <p>Scrapes, cleans and ranks daily insider-buy filings with a weighted scoring model, then emails an automated HTML report.</p>
+              <div class="project-stack">Python · BeautifulSoup · pandas · yfinance</div>
+            </article>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- CONTACT -->
-      <section id="section-contact" class="section section-padded section-contact">
-        <div class="section-header">
-          <h2>Contact</h2>
-          <p>One clear CTA to reach you.</p>
-        </div>
-        <div class="contact-inner card">
-          <p>
-            Ready to plug in actual details later. For now, this is just layout
-            and motion.
-          </p>
-          <a href="mailto:you@example.com" class="btn primary">Email Me</a>
-        </div>
-      </section>
+        <section id="projects-horizontal" class="section section-padded">
+          <div class="section-header">
+            <p class="section-kicker">Case study themes</p>
+            <h2>How I think about building.</h2>
+            <p>Scroll through the recurring pattern behind my projects.</p>
+          </div>
+          <div class="horizontal-wrapper">
+            <div class="horizontal-track" id="horizontal-track">
+              <div class="horizontal-panel"><span>01</span><strong>Find friction in a real workflow.</strong></div>
+              <div class="horizontal-panel"><span>02</span><strong>Map the messy process before coding.</strong></div>
+              <div class="horizontal-panel"><span>03</span><strong>Build a small tool people can actually use.</strong></div>
+              <div class="horizontal-panel"><span>04</span><strong>Test it against site constraints and edge cases.</strong></div>
+              <div class="horizontal-panel"><span>05</span><strong>Document it so someone else can run it.</strong></div>
+            </div>
+          </div>
+        </section>
 
-      <!-- FOOTER -->
+        <section id="section-contact" class="section section-padded section-contact">
+          <div class="section-header">
+            <p class="section-kicker">Contact</p>
+            <h2>Let’s build something useful.</h2>
+            <p>Best fit: engineering delivery, construction technology, automation, embedded systems, data tools or investment analysis.</p>
+          </div>
+          <div class="contact-inner card">
+            <p>
+              Open to conversations about engineering delivery, construction technology and the tools that sit between them. Easiest to reach by email or LinkedIn.
+            </p>
+            <div class="contact-actions">
+              <a href="mailto:kanwar.m@hotmail.com" class="btn primary">Email Me</a>
+              <a href="https://www.linkedin.com/in/harkanwar-singh-maan" class="btn ghost" target="_blank" rel="noreferrer">LinkedIn</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
       <footer class="footer">
-        <p>Ac <span id="year"></span> Shark — All rights reserved.</p>
+        <p>© <span id="year"></span> Harkanwar Maan.</p>
       </footer>
-
     </div>
   </div>
 
-  <!-- Project modal -->
-  <div class="modal-overlay" id="modal-overlay">
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
     <div class="modal" id="modal">
+      <button class="modal-x" id="modal-close" type="button" aria-label="Close project details">×</button>
+      <span class="project-tag" id="modal-tag">Project</span>
       <h3 id="modal-title">Project Title</h3>
       <p id="modal-desc">Description</p>
-      <img id="modal-image" src="" alt="Project visual" />
-      <button class="modal-close" id="modal-close">Close</button>
+      <p class="modal-stack" id="modal-stack"></p>
     </div>
   </div>
 
-  <!-- GSAP + ScrollTrigger CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer"></script>
-
-  <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" referrerpolicy="no-referrer" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
