@@ -36,10 +36,10 @@
       if (label) label.textContent = standby ? "STANDBY" : "ONLINE";
     }
 
-    const sig = $("#hud-signal");
-    if (sig) {
-      sig.innerHTML = '<span class="sig-dot"></span>' + (standby ? "STANDBY" : "NOMINAL");
-      sig.classList.toggle("is-standby", standby);
+    const pw = $("#hud-power");
+    if (pw) {
+      pw.innerHTML = '<span class="sig-dot"></span>' + (standby ? "STANDBY" : "ONLINE");
+      pw.classList.toggle("is-standby", standby);
     }
 
     state.tweens.forEach((tw) => {
@@ -63,6 +63,70 @@
     });
   }
 
+  /* ---------- scroll bolt (left-edge circuit trace) ---------- */
+
+  function bolt() {
+    const rail = $("#bolt-rail");
+    const boltEl = $("#bolt");
+    const lit = $("#bolt-trace-lit");
+    if (!rail || !boltEl || !lit) return;
+
+    const BOLT_H = 20;
+
+    const pct = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      return max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    };
+
+    const place = (p, jitter) => {
+      const travel = window.innerHeight - BOLT_H;
+      const y = p * travel;
+      boltEl.style.transform = "translate(" + (jitter || 0).toFixed(1) + "px," + y.toFixed(1) + "px)";
+      lit.style.height = (y + BOLT_H * 0.55).toFixed(1) + "px";
+    };
+
+    // Reduced motion: track scroll exactly, no easing, no arcing.
+    if (prefersReducedMotion) {
+      const update = () => place(pct(), 0);
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update, { passive: true });
+      return;
+    }
+
+    let current = pct();
+    let idleFrames = 0;
+
+    (function loop() {
+      const target = pct();
+      const delta = target - current;
+      current += delta * 0.12;
+
+      const speed = Math.abs(delta);
+      const arcing = speed > 0.004 && state.power !== "standby";
+      boltEl.classList.toggle("is-arcing", arcing);
+      const jitter = arcing ? (Math.random() - 0.5) * Math.min(4, speed * 260) : 0;
+
+      place(current, jitter);
+
+      idleFrames = speed < 0.0004 ? idleFrames + 1 : 0;
+      if (idleFrames > 30) {
+        // Settled: park exactly and wait for the next scroll instead of spinning rAF.
+        place(target, 0);
+        boltEl.classList.remove("is-arcing");
+        current = target;
+        const wake = () => {
+          idleFrames = 0;
+          window.removeEventListener("scroll", wake);
+          requestAnimationFrame(loop);
+        };
+        window.addEventListener("scroll", wake, { passive: true });
+        return;
+      }
+      requestAnimationFrame(loop);
+    })();
+  }
+
   /* ---------- boot sequence ---------- */
 
   function runBoot() {
@@ -82,10 +146,10 @@
       }
 
       const rows = [
-        { text: "> INITIALISING GRID ............ OK", cls: "" },
-        { text: "> LOADING DISTRICTS [5/5] ...... OK", cls: "" },
-        { text: "> CALIBRATING TELEMETRY ........ OK", cls: "" },
-        { text: "> SYSTEM ONLINE", cls: "online" }
+        { text: "> HSM//GRID v2.0", cls: "" },
+        { text: "> LOADING SECTIONS [5/5] ....... OK", cls: "" },
+        { text: "> RENDERING INTERFACE .......... OK", cls: "" },
+        { text: "> ONLINE", cls: "online" }
       ];
 
       el.hidden = false;
@@ -112,12 +176,12 @@
           i += 1;
         } else {
           clearInterval(tick);
-          setTimeout(finish, 340);
+          setTimeout(finish, 300);
         }
-      }, 230);
+      }, 185);
 
       skip && skip.addEventListener("click", finish);
-      setTimeout(finish, 4200); // hard safety valve
+      setTimeout(finish, 3400); // hard safety valve
     });
   }
 
@@ -229,7 +293,6 @@
 
   function hud() {
     const timeEl = $("#hud-time");
-    const loadEl = $("#hud-load");
 
     if (timeEl) {
       const pad = (n) => String(n).padStart(2, "0");
@@ -239,14 +302,6 @@
       };
       tickTime();
       setInterval(tickTime, 1000);
-    }
-
-    if (loadEl && !prefersReducedMotion) {
-      let load = 62;
-      setInterval(() => {
-        load = Math.max(48, Math.min(81, load + (Math.random() * 8 - 4)));
-        loadEl.textContent = Math.round(load) + "%";
-      }, 2600);
     }
   }
 
@@ -270,12 +325,19 @@
       .map(([key, sel]) => ({ key, el: $(sel) }))
       .filter((s) => s.el);
 
+    const hudSection = $("#hud-section");
+    const hudNames = {
+      hero: "HOME", map: "MAP", command: "ABOUT", projects: "PROJECTS",
+      experience: "EXPERIENCE", skills: "SKILLS", comms: "CONTACT"
+    };
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const hit = sections.find((s) => s.el === entry.target);
         if (!hit) return;
         links.forEach((a) => a.classList.toggle("active", a.dataset.district === hit.key));
+        if (hudSection) hudSection.textContent = hudNames[hit.key] || hit.key.toUpperCase();
       });
     }, { rootMargin: "-42% 0px -52% 0px", threshold: 0 });
 
@@ -286,6 +348,7 @@
 
   function progress() {
     const bar = $("#scroll-progress-bar");
+    const hudScroll = $("#hud-scroll");
     if (!bar) return;
     let queued = false;
 
@@ -293,7 +356,9 @@
       queued = false;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      bar.style.width = Math.min(100, Math.max(0, pct)).toFixed(2) + "%";
+      const clamped = Math.min(100, Math.max(0, pct));
+      bar.style.width = clamped.toFixed(2) + "%";
+      if (hudScroll) hudScroll.textContent = Math.round(clamped) + "%";
     };
 
     window.addEventListener("scroll", () => {
@@ -411,15 +476,33 @@
     const current = stations.findIndex((s) => s.classList.contains("is-current"));
     setActive(current > -1 ? current : stations.length - 1);
 
+    // Employer bracket: spans ST-03 → ST-05 (BESIX Watpac era) in horizontal layout.
+    const employerSpan = $("#employer-span");
+    const mq = window.matchMedia("(min-width: 861px)");
+
+    const layoutEmployer = () => {
+      if (!employerSpan) return;
+      if (!mq.matches) return; // hidden by CSS in vertical mode
+      const track = root.querySelector(".transit-track");
+      const nodeA = stations[2] && stations[2].querySelector(".station-node");
+      const nodeB = stations[4] && stations[4].querySelector(".station-node");
+      if (!track || !nodeA || !nodeB) return;
+      const t = track.getBoundingClientRect();
+      const a = nodeA.getBoundingClientRect();
+      const b = nodeB.getBoundingClientRect();
+      const left = a.left + a.width / 2 - t.left;
+      const width = b.left + b.width / 2 - t.left - left;
+      employerSpan.style.left = left.toFixed(1) + "px";
+      employerSpan.style.width = Math.max(0, width).toFixed(1) + "px";
+    };
+
     // Travelling pulse along the line (horizontal >=861px, vertical below).
     const pulse = root.querySelector(".transit-pulse");
-    if (!pulse) return;
-    if (prefersReducedMotion || !hasGSAP) { pulse.remove(); return; }
-
-    const mq = window.matchMedia("(min-width: 861px)");
     let tween = null;
 
     const build = () => {
+      layoutEmployer();
+      if (!pulse || prefersReducedMotion || !hasGSAP) return;
       if (tween) {
         const idx = state.tweens.indexOf(tween);
         if (idx > -1) state.tweens.splice(idx, 1);
@@ -452,7 +535,10 @@
       if (state.power === "standby") tween.pause();
     };
 
+    if (pulse && (prefersReducedMotion || !hasGSAP)) pulse.remove();
+
     build();
+    window.addEventListener("load", layoutEmployer);
     if (mq.addEventListener) mq.addEventListener("change", build);
 
     let resizeTimer;
@@ -477,7 +563,7 @@
       { name: "SITE WORKFLOWS", skills: ["D&C DELIVERY", "SEQUENCING", "SUBCONTRACTORS", "ACONEX", "BLUEBEAM"] }
     ];
 
-    const CX = 520, CY = 340, RX = 300, RY = 185, LEAF = 96;
+    const CX = 540, CY = 340, RX = 280, RY = 185, LEAF = 120;
     const angles = [-90, -18, 54, 126, 198].map((deg) => (deg * Math.PI) / 180);
 
     const make = (tag, attrs, cls) => {
@@ -500,8 +586,10 @@
 
     clusters.forEach((cluster, ci) => {
       const A = angles[ci];
-      const hx = CX + RX * Math.cos(A);
-      const hy = CY + RY * Math.sin(A);
+      const cosA = Math.cos(A);
+      const sinA = Math.sin(A);
+      const hx = CX + RX * cosA;
+      const hy = CY + RY * sinA;
 
       edges.appendChild(make("line", { x1: CX, y1: CY, x2: hx.toFixed(1), y2: hy.toFixed(1), "data-cluster": ci }, "sk-edge sk-edge-core"));
 
@@ -509,19 +597,24 @@
       hub.appendChild(make("circle", { cx: hx.toFixed(1), cy: hy.toFixed(1), r: 16 }, "sk-hub-ring"));
       hub.appendChild(make("circle", { cx: hx.toFixed(1), cy: hy.toFixed(1), r: 6.5 }, "sk-hub-core"));
 
-      const cosA = Math.cos(A);
-      const sinA = Math.sin(A);
-      const anchor = cosA > 0.35 ? "start" : cosA < -0.35 ? "end" : "middle";
-      const lx = hx + 30 * cosA;
-      const ly = hy + 30 * sinA + (Math.abs(sinA) > 0.5 ? (sinA > 0 ? 16 : -8) : 4);
+      // Label sits INWARD of the hub (toward the core) — that ring is empty,
+      // so titles can never collide with the leaf fan, which points outward.
+      // A paint-order halo (CSS) keeps text legible where it crosses the spoke.
+      const dxc = CX - hx, dyc = CY - hy;
+      const dl = Math.hypot(dxc, dyc) || 1;
+      const ux = dxc / dl, uy = dyc / dl;
+      const lx = hx + 44 * ux;
+      const ly = hy + 44 * uy + 4;
+      const anchor = ux > 0.35 ? "start" : ux < -0.35 ? "end" : "middle";
       const hubLabel = make("text", { x: lx.toFixed(1), y: ly.toFixed(1), "text-anchor": anchor }, "sk-hub-label");
       hubLabel.textContent = cluster.name;
       hub.appendChild(hubLabel);
       nodes.appendChild(hub);
 
       const n = cluster.skills.length;
-      const spread = (Math.min(115, 34 * (n - 1)) * Math.PI) / 180;
+      const spread = (Math.min(130, 36 * (n - 1)) * Math.PI) / 180;
       const step = n > 1 ? spread / (n - 1) : 0;
+      let midCount = 0; // stagger consecutive middle-anchored labels into two rows
 
       cluster.skills.forEach((skill, si) => {
         const a = A + (si - (n - 1) / 2) * step;
@@ -536,7 +629,14 @@
         const cosL = Math.cos(a);
         const anchorL = cosL > 0.35 ? "start" : cosL < -0.35 ? "end" : "middle";
         const tx = x + (anchorL === "start" ? 10 : anchorL === "end" ? -10 : 0);
-        const ty = y + (Math.abs(cosL) <= 0.35 ? (Math.sin(a) > 0 ? 19 : -11) : 4);
+        let ty;
+        if (anchorL === "middle") {
+          midCount += 1;
+          const rowShift = midCount % 2 === 0 ? 15 : 0;
+          ty = y + (Math.sin(a) > 0 ? 20 + rowShift : -(12 + rowShift));
+        } else {
+          ty = y + 4;
+        }
         const label = make("text", { x: tx.toFixed(1), y: ty.toFixed(1), "text-anchor": anchorL }, "sk-leaf-label");
         label.textContent = skill;
         leaf.appendChild(label);
@@ -679,6 +779,7 @@
   initPower();
   setupYear();
   progress();
+  bolt();
   sectionSpy();
   hud();
   heroGrid();

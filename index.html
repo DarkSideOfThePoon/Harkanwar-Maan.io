@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Harkanwar “Shark” Maan — Services Engineer · Builder</title>
-  <meta name="description" content="Services engineering cadet at BESIX Watpac with real commissioning ownership on $350M+ infrastructure — and the builder of the software tools that work should have had." />
+  <meta name="description" content="Services engineer at BESIX Watpac and electrical engineering student at UNSW — building systems across infrastructure, software and automation." />
   <meta property="og:title" content="Harkanwar “Shark” Maan — Services Engineer · Builder" />
-  <meta property="og:description" content="Commissioning ownership on Sydney Metro Barangaroo and the $430M Woolworths DC — plus the tools built along the way." />
+  <meta property="og:description" content="Commissioning experience on Sydney Metro Barangaroo and the Woolworths Sydney DC — plus the software tools built along the way." />
   <meta property="og:type" content="website" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='7' fill='%23050914' stroke='%2338bdf8' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%237df9ff'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -25,16 +25,25 @@
   </div>
 
   <div id="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+
+  <!-- Scroll bolt: current travelling down the left-edge trace as you scroll -->
+  <div id="bolt-rail" aria-hidden="true">
+    <span class="bolt-trace"></span>
+    <span class="bolt-trace-lit" id="bolt-trace-lit"></span>
+    <svg id="bolt" viewBox="0 0 12 20" width="12" height="20">
+      <path d="M7.4 0 L1 11.2 L5 11.2 L4.2 20 L11 8.4 L6.8 8.4 Z"/>
+    </svg>
+  </div>
   <a class="skip-link" href="#section-command">Skip to content</a>
 
   <header class="nav" id="site-nav">
     <a class="brand mono" href="#section-hero">HSM<span class="brand-sep">//</span>GRID</a>
-    <nav class="nav-links mono" aria-label="Districts">
-      <a href="#section-command" data-district="command">COMMAND</a>
+    <nav class="nav-links mono" aria-label="Site sections">
+      <a href="#section-command" data-district="command">ABOUT</a>
       <a href="#section-projects" data-district="projects">PROJECTS</a>
       <a href="#section-experience" data-district="experience">EXPERIENCE</a>
       <a href="#section-skills" data-district="skills">SKILLS</a>
-      <a href="#section-comms" data-district="comms">COMMS</a>
+      <a href="#section-comms" data-district="comms">CONTACT</a>
     </nav>
     <button id="power-toggle" class="power mono" type="button" aria-pressed="true" title="Grid power — standby dims glow and pauses ambient motion">
       <span class="power-dot" aria-hidden="true"></span>
@@ -44,14 +53,21 @@
 
   <!-- "You are here" district rail (desktop) -->
   <nav class="district-rail mono" id="district-rail" aria-label="Current position">
-    <a href="#section-hero" data-district="hero"><span class="rail-dot"></span><span class="rail-name">00 · DECK</span></a>
-    <a href="#section-map" data-district="map"><span class="rail-dot"></span><span class="rail-name">GRID · NAV</span></a>
-    <a href="#section-command" data-district="command"><span class="rail-dot"></span><span class="rail-name">01 · COMMAND</span></a>
+    <a href="#section-hero" data-district="hero"><span class="rail-dot"></span><span class="rail-name">00 · HOME</span></a>
+    <a href="#section-map" data-district="map"><span class="rail-dot"></span><span class="rail-name">GRID · MAP</span></a>
+    <a href="#section-command" data-district="command"><span class="rail-dot"></span><span class="rail-name">01 · ABOUT</span></a>
     <a href="#section-projects" data-district="projects"><span class="rail-dot"></span><span class="rail-name">02 · PROJECTS</span></a>
     <a href="#section-experience" data-district="experience"><span class="rail-dot"></span><span class="rail-name">03 · EXPERIENCE</span></a>
     <a href="#section-skills" data-district="skills"><span class="rail-dot"></span><span class="rail-name">04 · SKILLS</span></a>
-    <a href="#section-comms" data-district="comms"><span class="rail-dot"></span><span class="rail-name">05 · COMMS</span></a>
+    <a href="#section-comms" data-district="comms"><span class="rail-dot"></span><span class="rail-name">05 · CONTACT</span></a>
   </nav>
+
+  <aside class="hud mono" id="hud" aria-hidden="true">
+    <div class="hud-row"><span class="hud-k">LOCAL TIME</span><span class="hud-v" id="hud-time">--:--:--</span></div>
+    <div class="hud-row"><span class="hud-k">SECTION</span><span class="hud-v" id="hud-section">HOME</span></div>
+    <div class="hud-row"><span class="hud-k">SCROLL</span><span class="hud-v" id="hud-scroll">0%</span></div>
+    <div class="hud-row"><span class="hud-k">POWER</span><span class="hud-v hud-power" id="hud-power"><span class="sig-dot"></span>ONLINE</span></div>
+  </aside>
 
   <main>
 
@@ -62,19 +78,14 @@
         <p class="district-label mono">DST-00 // COMMAND DECK</p>
         <h1 class="hero-title">Harkanwar <span class="glow-cyan">“Shark”</span> Maan</h1>
         <p class="hero-role mono">SERVICES ENGINEER CADET · BESIX WATPAC &nbsp;—&nbsp; BE ELECTRICAL (HONS) · UNSW</p>
-        <p class="hero-pitch">An engineer who owns real commissioning work on <strong class="amber">$350M+ infrastructure</strong> — and builds the tools that work should have had.</p>
+        <p class="hero-pitch">Electrical engineering × software. Building systems across infrastructure, automation and data — from live commissioning work to the tools that support it.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary mono" href="#section-map">ENTER THE GRID ▸</a>
-          <a class="btn btn-ghost mono" href="#section-comms">OPEN CHANNEL</a>
+          <a class="btn btn-primary mono" href="#section-projects">VIEW PROJECTS ▸</a>
+          <a class="btn btn-ghost mono" href="#section-comms">CONTACT</a>
+          <a class="btn btn-ghost mono" href="Harkanwar-Maan-Resume.pdf" download>RÉSUMÉ</a>
         </div>
       </div>
-      <aside class="hud mono" id="hud" aria-hidden="true">
-        <div class="hud-row"><span class="hud-k">SYS.TIME</span><span class="hud-v" id="hud-time">--:--:--</span></div>
-        <div class="hud-row"><span class="hud-k">GRID.LOAD</span><span class="hud-v" id="hud-load">62%</span></div>
-        <div class="hud-row"><span class="hud-k">SIGNAL</span><span class="hud-v hud-signal" id="hud-signal"><span class="sig-dot"></span>NOMINAL</span></div>
-        <div class="hud-row"><span class="hud-k">LOC</span><span class="hud-v">SYD · -33.86 / 151.21</span></div>
-      </aside>
-      <div class="scroll-cue mono" aria-hidden="true">SCROLL ▾</div>
+      <a class="scroll-cue mono" href="#section-map">EXPLORE THE GRID ▾</a>
     </section>
 
     <!-- ============ CITY MAP ============ -->
@@ -82,8 +93,8 @@
       <div class="container">
         <header class="section-head">
           <p class="district-label mono">GRID // NAVIGATION LAYER</p>
-          <h2>The city network</h2>
-          <p class="section-intro">Five districts on one grid. Hover a node to light its line — select it to travel there.</p>
+          <h2>Navigate the grid</h2>
+          <p class="section-intro">The whole portfolio on one map. Hover a node to light its line — select it to jump there.</p>
         </header>
 
         <div class="map-wrap card-frame">
@@ -124,50 +135,50 @@
             </g>
 
             <!-- districts -->
-            <g class="district" data-target="#section-command" data-path="path-command" tabindex="0" role="link" aria-label="District 01 — Command: operator profile">
+            <g class="district" data-target="#section-command" data-path="path-command" tabindex="0" role="link" aria-label="About — profile and background">
               <rect class="d-node" x="148" y="128" width="44" height="44" rx="9"/>
               <circle class="d-core" cx="170" cy="150" r="5"/>
               <text class="d-code" x="170" y="196" text-anchor="middle">DST-01</text>
-              <text class="d-name" x="170" y="215" text-anchor="middle">COMMAND</text>
+              <text class="d-name" x="170" y="215" text-anchor="middle">ABOUT</text>
             </g>
 
-            <g class="district" data-target="#section-projects" data-path="path-projects" tabindex="0" role="link" aria-label="District 02 — Projects: built structures">
+            <g class="district" data-target="#section-projects" data-path="path-projects" tabindex="0" role="link" aria-label="Projects — software and tools">
               <rect class="d-node" x="728" y="118" width="44" height="44" rx="9"/>
               <circle class="d-core" cx="750" cy="140" r="5"/>
               <text class="d-code" x="750" y="186" text-anchor="middle">DST-02</text>
               <text class="d-name" x="750" y="205" text-anchor="middle">PROJECTS</text>
             </g>
 
-            <g class="district" data-target="#section-experience" data-path="path-experience" tabindex="0" role="link" aria-label="District 03 — Experience: site record">
+            <g class="district" data-target="#section-experience" data-path="path-experience" tabindex="0" role="link" aria-label="Experience — roles and projects">
               <rect class="d-node" x="748" y="418" width="44" height="44" rx="9"/>
               <circle class="d-core" cx="770" cy="440" r="5"/>
               <text class="d-code" x="770" y="486" text-anchor="middle">DST-03</text>
               <text class="d-name" x="770" y="505" text-anchor="middle">EXPERIENCE</text>
             </g>
 
-            <g class="district" data-target="#section-skills" data-path="path-skills" tabindex="0" role="link" aria-label="District 04 — Skills: capability network">
+            <g class="district" data-target="#section-skills" data-path="path-skills" tabindex="0" role="link" aria-label="Skills — capability areas">
               <rect class="d-node" x="128" y="418" width="44" height="44" rx="9"/>
               <circle class="d-core" cx="150" cy="440" r="5"/>
               <text class="d-code" x="150" y="486" text-anchor="middle">DST-04</text>
               <text class="d-name" x="150" y="505" text-anchor="middle">SKILLS</text>
             </g>
 
-            <g class="district" data-target="#section-comms" data-path="path-comms" tabindex="0" role="link" aria-label="District 05 — Comms: open a channel">
+            <g class="district" data-target="#section-comms" data-path="path-comms" tabindex="0" role="link" aria-label="Contact — email, LinkedIn, résumé">
               <rect class="d-node" x="438" y="56" width="44" height="44" rx="9"/>
               <circle class="d-core" cx="460" cy="78" r="5"/>
               <text class="d-code" x="494" y="72" text-anchor="start">DST-05</text>
-              <text class="d-name" x="494" y="91" text-anchor="start">COMMS</text>
+              <text class="d-name" x="494" y="91" text-anchor="start">CONTACT</text>
             </g>
           </svg>
         </div>
 
         <!-- Simplified stacked map for small screens -->
         <nav class="map-index" aria-label="Districts (list view)">
-          <a href="#section-command"><span class="mi-dot"></span><span class="mi-code mono">DST-01</span><span class="mi-name">COMMAND</span></a>
+          <a href="#section-command"><span class="mi-dot"></span><span class="mi-code mono">DST-01</span><span class="mi-name">ABOUT</span></a>
           <a href="#section-projects"><span class="mi-dot"></span><span class="mi-code mono">DST-02</span><span class="mi-name">PROJECTS</span></a>
           <a href="#section-experience"><span class="mi-dot"></span><span class="mi-code mono">DST-03</span><span class="mi-name">EXPERIENCE</span></a>
           <a href="#section-skills"><span class="mi-dot"></span><span class="mi-code mono">DST-04</span><span class="mi-name">SKILLS</span></a>
-          <a href="#section-comms"><span class="mi-dot"></span><span class="mi-code mono">DST-05</span><span class="mi-name">COMMS</span></a>
+          <a href="#section-comms"><span class="mi-dot"></span><span class="mi-code mono">DST-05</span><span class="mi-name">CONTACT</span></a>
         </nav>
       </div>
     </section>
@@ -177,13 +188,13 @@
       <div class="container">
         <header class="section-head">
           <p class="district-label mono">DST-01 // COMMAND CENTRE</p>
-          <h2>Operator profile</h2>
+          <h2>About</h2>
         </header>
 
         <div class="command-grid">
           <div class="command-copy">
-            <p>I like work that has consequences — live projects, real stakeholders, deadlines and systems that have to perform outside a classroom. By day I help coordinate the electrical, mechanical, hydraulic and fire systems that make major buildings work: currently the commissioning phase of the <strong>$430M Woolworths Sydney Chilled &amp; Fresh Distribution Centre</strong>, after closing out handover on Sydney Metro’s <strong>$350M Barangaroo Station</strong>.</p>
-            <p>By night I’m an electrical engineering student at UNSW and a compulsive builder of small software tools. The pattern is simple: find operational friction, understand the technical detail, then build something useful around it — an extraction pipeline, a scoring engine, a tracker the job actually needs.</p>
+            <p>I like work that has consequences — live projects, real stakeholders, systems that have to perform. Currently commissioning the <strong>$430M Woolworths Sydney Chilled &amp; Fresh Distribution Centre</strong> with BESIX Watpac, after closing out handover on Sydney Metro’s <strong>$350M Barangaroo Station</strong>.</p>
+            <p>Alongside site work I study electrical engineering at UNSW and build software tools: find operational friction, understand the detail, build something useful around it.</p>
             <p class="command-tagline mono">[ FIELD ENGINEERING × SOFTWARE ] — the useful intersection.</p>
           </div>
           <div class="stat-grid">
@@ -201,8 +212,8 @@
       <div class="container">
         <header class="section-head">
           <p class="district-label mono">DST-02 // PROJECT DISTRICT</p>
-          <h2>Built structures</h2>
-          <p class="section-intro">Tools built to remove friction from real work — labelled honestly by maturity. Select a structure for its full record.</p>
+          <h2>Projects</h2>
+          <p class="section-intro">Tools built to remove friction from real work — labelled by maturity. Select a card for the full record.</p>
           <p class="protocol mono">PROTOCOL // 01 FIND FRICTION → 02 MAP THE MESS → 03 BUILD SMALL → 04 TEST ON SITE → 05 DOCUMENT</p>
         </header>
 
@@ -277,8 +288,8 @@
       <div class="container">
         <header class="section-head">
           <p class="district-label mono">DST-03 // CONSTRUCTION DISTRICT</p>
-          <h2>Site record</h2>
-          <p class="section-intro">Public-safe record of the roles and projects that built the judgement — led by the credential that matters most.</p>
+          <h2>Experience</h2>
+          <p class="section-intro">Roles and projects, led by the credential that matters most.</p>
         </header>
 
         <article class="landmark card-frame">
@@ -359,6 +370,7 @@
             <div class="transit-track">
               <span class="transit-line" aria-hidden="true"></span>
               <span class="transit-pulse" aria-hidden="true"></span>
+              <div class="employer-span mono" id="employer-span" aria-hidden="true"><span class="employer-label">BESIX WATPAC · MAY 2023 — NOW</span></div>
               <ol class="transit-stations">
               <li class="station" data-code="ST-01" data-date="2020 — 2023" data-title="Business Development Manager — Tyremax">
                 <button class="station-node" type="button" aria-label="Station 1 — Tyremax, 2020 to 2023"></button>
@@ -378,20 +390,23 @@
                 <button class="station-node" type="button" aria-label="Station 3 — joined BESIX Watpac, May 2023"></button>
                 <span class="station-code mono">ST-03</span>
                 <span class="station-name">BESIX WATPAC</span>
+                <span class="station-employer mono">JOINED · TIER 1 D&amp;C</span>
                 <span class="station-date mono">MAY 2023</span>
                 <div class="station-detail">Joined Tier 1 design-and-construct delivery — coordinating electrical, mechanical, fire and hydraulic packages while completing the BE (Electrical) Honours at UNSW.</div>
               </li>
-              <li class="station" data-code="ST-04" data-date="2023 — 2024" data-title="Sydney Metro — Barangaroo Station · Handover">
-                <button class="station-node" type="button" aria-label="Station 4 — Barangaroo Station handover, 2023 to 2024"></button>
+              <li class="station station-sub" data-code="ST-04" data-date="2023 — 2024" data-title="Sydney Metro — Barangaroo Station · Handover (BESIX Watpac)">
+                <button class="station-node" type="button" aria-label="Station 4 — Barangaroo Station handover with BESIX Watpac, 2023 to 2024"></button>
                 <span class="station-code mono">ST-04</span>
                 <span class="station-name">BARANGAROO</span>
+                <span class="station-employer mono">@ BESIX WATPAC</span>
                 <span class="station-date mono">2023 — 2024</span>
                 <div class="station-detail">Owned the Portion 6 dewatering commissioning lifecycle end-to-end, through to client acceptance and an O&amp;M manual accepted by Sydney Metro.</div>
               </li>
-              <li class="station is-current" data-code="ST-05" data-date="2025 — NOW" data-title="Woolworths Sydney C&amp;F DC · Commissioning">
-                <button class="station-node" type="button" aria-label="Station 5 — Woolworths Distribution Centre, current"></button>
+              <li class="station station-sub is-current" data-code="ST-05" data-date="2025 — NOW" data-title="Woolworths Sydney C&amp;F DC · Commissioning (BESIX Watpac)">
+                <button class="station-node" type="button" aria-label="Station 5 — Woolworths Distribution Centre with BESIX Watpac, current"></button>
                 <span class="station-code mono">ST-05</span>
                 <span class="station-name">WOOLWORTHS DC</span>
+                <span class="station-employer mono">@ BESIX WATPAC</span>
                 <span class="station-date mono is-active-date">2025 — NOW</span>
                 <div class="station-detail">VSD energisation sign-off, 11kV switchboard commissioning witness, ITP/ITC review across refrigeration plant, MSSBs and HV generators — live now.</div>
               </li>
@@ -413,12 +428,12 @@
       <div class="container">
         <header class="section-head">
           <p class="district-label mono">DST-04 // SYSTEMS GRID</p>
-          <h2>Capability network</h2>
-          <p class="section-intro">Less “I know tools”, more “where I can create value”. Hover a node — its related systems light with it.</p>
+          <h2>Skills</h2>
+          <p class="section-intro">Hover a node — its related systems light with it.</p>
         </header>
 
         <div class="skills-network card-frame">
-          <svg id="skills-map" viewBox="0 0 1040 680" role="img" aria-label="Skill network: services engineering, software and automation, data and python, hardware and systems, site workflows"></svg>
+          <svg id="skills-map" viewBox="0 0 1080 680" role="img" aria-label="Skill network: services engineering, software and automation, data and python, hardware and systems, site workflows"></svg>
         </div>
 
         <div class="skills-clusters">
@@ -451,8 +466,8 @@
       <div class="container">
         <header class="section-head">
           <p class="district-label mono">DST-05 // COMMS TOWER</p>
-          <h2>Open a channel</h2>
-          <p class="section-intro">Open to conversations about engineering delivery, construction technology and the tools that sit between them.</p>
+          <h2>Contact</h2>
+          <p class="section-intro">Open to conversations about engineering delivery, construction technology and the tools between them.</p>
         </header>
 
         <div class="tower" aria-hidden="true">
@@ -469,9 +484,9 @@
 
         <div class="comms-actions">
           <a class="btn btn-primary mono" href="mailto:kanwar.m@hotmail.com">EMAIL ▸ KANWAR.M@HOTMAIL.COM</a>
-          <a class="btn btn-ghost mono" href="https://www.linkedin.com/in/harkanwar-singh-maan" target="_blank" rel="noopener noreferrer">LINKEDIN ▸ /HARKANWAR-SINGH-MAAN</a>
-          <a class="btn btn-ghost mono" href="Harkanwar-Maan-Resume.pdf" download>RÉSUMÉ ▸ DOWNLOAD PDF</a>
-          <span class="btn btn-offline mono" aria-disabled="true" title="Wire up when the GitHub profile is live">GITHUB ▸ OFFLINE // AWAITING UPLINK</span>
+          <a class="btn btn-ghost mono" href="https://www.linkedin.com/in/harkanwar-singh-maan" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          <a class="btn btn-ghost mono" href="Harkanwar-Maan-Resume.pdf" download>RÉSUMÉ ▸ PDF</a>
+          <span class="btn btn-offline mono" aria-disabled="true" title="Wire up when the GitHub profile is live">GITHUB ▸ COMING SOON</span>
         </div>
       </div>
     </section>
